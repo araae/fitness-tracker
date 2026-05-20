@@ -36,11 +36,11 @@ export async function createActivity(token, activity) {
   }
 }
 
-//define the asynchronous deleteActivity utility function exported to components
-//perform an HTTP DELETE request targeting the matching activity id endpoint
-//attach the provided authorization bearer token value into the request headers dictionary
-//check if the server response flag is not okay and throw the response error message
-//return the parsed confirmation payload json dictionary back to the caller
+//create a delete function that components can use
+//send a delete request to the API for a specific activity
+//send the users secret token in the request headers to prove they are logged in
+//if the server says no, catch the mistake and throw an error message
+//send back the data response from the server
 
 export async function deleteActivity(activityId, token) {
   const response = await fetch(API + "/activities/" + activityId, {
@@ -53,8 +53,6 @@ export async function deleteActivity(activityId, token) {
 
   if (!response.ok) {
     const result = await response.json();
-    throw Error(
-      result.message || "You are not authorized to delete this activity.",
-    );
+    throw Error(result.message);
   }
 }
